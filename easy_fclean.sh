@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Nome: easy_remove.sh
+# Nome: easy_fclean.sh
 # Versão: 0.1.0-alpha
 # Versáo: 0.1.3-beta
 # Descrição: Ferramenta para exclusão segura de arquivos e diretórios.
