@@ -2,6 +2,7 @@
 # ==============================================================================
 # Nome: easy_remove.sh
 # Versão: 0.1.0-alpha
+# Versáo: 0.1.3-beta
 # Descrição: Ferramenta para exclusão segura de arquivos e diretórios.
 #            Parte do conjunto de ferramentas 'easy_tools' para segurança e
 #            manipulação de dados.
