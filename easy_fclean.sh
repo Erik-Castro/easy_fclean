@@ -143,7 +143,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # Valida se o arquivo existe
-if [[ ! -f ${1-x} ]]; then
+if [[ ! -f ${1-x}  && ! -d "${1-x}" ]]; then
     echo "O arquivo ou diretório: \"${1}\", não existe."
     exit 1
 fi
