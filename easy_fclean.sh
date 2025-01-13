@@ -142,6 +142,12 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
+# Valida se o arquivo existe
+if [[ ! -f ${1-x} ]]; then
+    echo "O arquivo ou diretório: \"${1}\", não existe."
+    exit 1
+fi
+
 # Se o argumento for um arquivo, sobrescreve e sai
 if [[ -f "$1" ]]; then
     shred -un "$OVERWRITES" "$1" || {
