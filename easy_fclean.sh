@@ -13,7 +13,7 @@
 #   -t <número>   Define o número de threads para processamento paralelo.
 #                 Padrão: 2
 #   -o <número>   Define o número de sobrescrições para o comando 'shred'.
-#                 Padrão: 33
+#                 Padrão: 08
 #   -h            Exibe esta ajuda.
 # 
 # Recursos:
@@ -33,7 +33,7 @@
 
 # Configurações padrão
 THREADS=2
-OVERWRITES=33
+OVERWRITES=8
 export ASSUME_YES=0
 ini_t=$(date '+%s')
 Sub_dir=0
@@ -47,6 +47,7 @@ show_help() {
     echo "  -o <número>   Número de sobrescrições para shred (padrão: $OVERWRITES)"
     echo "  -y            Assume yes to exclusion"
     echo "  -h            Exibir esta ajuda"
+    echo "  -v           exibir verbosidafe"
 }
 
 # Logverbose
@@ -63,6 +64,7 @@ log_message() {
 remove_securely() {
     local arg="${1-x}"
     local subdir
+    local flag
 
     # Verifica se o argumento está vazio
     [[ -z "$arg" ]] && exit 2
@@ -70,8 +72,13 @@ remove_securely() {
     # Log nivel 1
     log_message 1 "Removing files from: \"$arg\""
 
+    # Verbosidade no shred
+    if (( VERBOSITY >= 3 )); then
+	flag="-v"
+    fi
+
     # Encontra e sobrescreve arquivos
-    find "$arg" -maxdepth 1 -type f -print0 | xargs -0 -I {} -P "$THREADS" shred -un "$OVERWRITES" {} || {
+    find "$arg" -maxdepth 1 -type f -print0 | xargs -0 -I {} -P "$THREADS" shred "$flag" -un "$OVERWRITES" {} || {
         echo "Erro ao sobrescrever arquivos em $arg"
         return 1
     }
@@ -164,7 +171,7 @@ remove_securely "$1" || {
 }
 
 [[ "$?" -eq 0 ]] && {
-    total_time=$(echo $(( $(date '+%s') - ini_t )) | bc)
+    total_time=$(echo "scale=3; $(date "+%s") - $ini_t" | bc);
     echo "Total time of execution: ${total_time}."
 
     [[ $Sub_dir -gt 0 ]] && {
